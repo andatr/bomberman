@@ -5,13 +5,13 @@ public class PlayerController : MonoBehaviour
     public float speed = 20.0f;
 
     private Animator animator;
-    private new Rigidbody2D rigidbody;
+    //private new Rigidbody2D rigidbody;
     private Vector3 direction;
 
     private void Start()
     {
         animator  = GetComponent<Animator>();
-        rigidbody = GetComponent<Rigidbody2D>();
+        //rigidbody = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
@@ -26,7 +26,8 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        rigidbody.MovePosition(transform.position + speed * Time.deltaTime * direction);
+        transform.position = transform.position + speed * Time.deltaTime * direction;
+        //rigidbody.MovePosition(transform.position + speed * Time.deltaTime * direction);
     }
 
     private void SetAnimation()
