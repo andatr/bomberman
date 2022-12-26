@@ -15,6 +15,6 @@ MonoBehaviour:
   gamefield:
     width: 21
     height: 7
-    density: 0
+    density: 0.5
   player:
-    speed: 10
+    speed: 2

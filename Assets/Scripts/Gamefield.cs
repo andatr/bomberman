@@ -38,9 +38,9 @@ public class Gamefield
 
     public void Generate(int width, int height, float density)
     {
+        density = 1.0f - density;
         validateSize(ref width);
         validateSize(ref height);
-        validateDensity(ref density);
         Cells = new Cell[height][];
         for (int i = 0; i < height; ++i)
         {
@@ -75,7 +75,7 @@ public class Gamefield
                 }
                 else
                 {
-                    bool obstacle = Random.Range(0.0f, density) > 0.5f;
+                    bool obstacle = Random.Range(0.0f, 1.0f) > density;
                     if (obstacle)
                     {
                         Cells[i][j].type = CellType.Obstacle;
@@ -110,15 +110,5 @@ public class Gamefield
             Debug.LogWarning($"Gamefield: gamefield size {size} must be an odd number");
             size += 1;
         }
-    }
-
-    private void validateDensity(ref float density)
-    {
-        if (density < 0.0f) 
-        {
-            Debug.LogWarning($"Gamefield: gamefield density {density} must be > 0");
-            density = 0.0f;
-        }
-        density += 0.5f;
     }
 }

@@ -10,16 +10,16 @@ public class TileStorage : ScriptableObject
     public Tile[] pillars;
     public Tile[] obstacles;
 
-    private Dictionary<Gamefield.CellType, Tile[]> tiles;
+    private Dictionary<Gamefield.CellType, Tile[]> _tiles;
 
     private void SetTiles()
     {
-        tiles = new Dictionary<Gamefield.CellType, Tile[]>();
-        tiles[Gamefield.CellType.Path]     = paths;
-        tiles[Gamefield.CellType.Border]   = borders;
-        tiles[Gamefield.CellType.Pillar]   = pillars;
-        tiles[Gamefield.CellType.Obstacle] = obstacles;
-        foreach (var kvp in tiles)
+        _tiles = new Dictionary<Gamefield.CellType, Tile[]>();
+        _tiles[Gamefield.CellType.Path]     = paths;
+        _tiles[Gamefield.CellType.Border]   = borders;
+        _tiles[Gamefield.CellType.Pillar]   = pillars;
+        _tiles[Gamefield.CellType.Obstacle] = obstacles;
+        foreach (var kvp in _tiles)
         {
             if (kvp.Value.Length == 0)
             {
@@ -30,9 +30,9 @@ public class TileStorage : ScriptableObject
 
     public Tile GetTile(Gamefield.CellType type)
     {
-        if (tiles == null) SetTiles();
+        if (_tiles == null) SetTiles();
         Tile[] variants = null;
-        tiles.TryGetValue(type, out variants);
+        _tiles.TryGetValue(type, out variants);
         if (variants == null)
         {
             Debug.LogError($"No tiles of type {type} found", this);
