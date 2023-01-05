@@ -21,15 +21,14 @@ public class Gamefield : MonoBehaviour
 
     private void Awake()
     {
-        _good = true;
         if (tilemap == null)
         {
-            _good = false;
+            enabled = false;
             Debug.LogError("Tilemap component is not set", this);
         }
         CheckTiles(pathTiles, "Path");
         CheckTiles(pillarTiles, "Pillart");
-        //CheckTiles(obstacleTiles, "Obstacle");
+        CheckTiles(obstacleTiles, "Obstacle");
         CheckTiles(borderTopTiles, "Top border");
         CheckTiles(borderBottomTiles, "Bottom border");
         CheckTiles(borderLeftTiles, "Left border");
@@ -46,9 +45,8 @@ public class Gamefield : MonoBehaviour
 
     public Vector3 TileToWorld(Vector3Int tilePosition)
     {
-        if (!_good) return new Vector3();
-        tilePosition.x -= _cells[0].Length / 2;
-        tilePosition.y -= _cells.Length / 2;
+        tilePosition.x -= cells[0].Length / 2;
+        tilePosition.y -= cells.Length / 2;
         var worldPosition = tilemap.CellToWorld(tilePosition);
         worldPosition.x += tilemap.cellSize.x / 2.0f;
         worldPosition.y = -worldPosition.y + tilemap.cellSize.y / 2.0f;
@@ -57,16 +55,14 @@ public class Gamefield : MonoBehaviour
 
     public Vector3Int WorldToTile(Vector3 worldPosition)
     {
-        if (!_good) return new Vector3Int();
         var tilePosition = tilemap.WorldToCell(worldPosition);
-        tilePosition.x += _cells[0].Length / 2;
-        tilePosition.y += _cells.Length / 2;
+        tilePosition.x += cells[0].Length / 2;
+        tilePosition.y += cells.Length / 2;
         return tilePosition;
     }
 
     public void Generate(int width, int height, float density)
     {
-        if (!_good) return;
         ValidateSize(ref width);
         ValidateSize(ref height);
         AllocateCells(width, height);
@@ -82,7 +78,7 @@ public class Gamefield : MonoBehaviour
     {
         if (tiles == null || tiles.Length == 0)
         {
-            _good = false;
+            enabled = false;
             Debug.LogError($"{name} tiles are not set", this);
         }
     }
@@ -103,14 +99,14 @@ public class Gamefield : MonoBehaviour
 
     private void AllocateCells(int width, int height)
     {
-        if (_cells != null && height == _cells.Length && width == _cells[0].Length) return;
-        _cells = new Cell[height][];
+        if (cells != null && height == cells.Length && width == cells[0].Length) return;
+        cells = new Cell[height][];
         for (int i = 0; i < height; ++i)
         {
-            _cells[i] = new Cell[width];
+            cells[i] = new Cell[width];
             for (int j = 0; j < width; ++j)
             {
-                _cells[i][j] = new Cell();
+                cells[i][j] = new Cell();
             }
         }
         tilemap.ClearAllTiles();
@@ -124,14 +120,14 @@ public class Gamefield : MonoBehaviour
         // top and bottom borders
         for (int i = 0; i < width; ++i)
         {
-            _cells[0][i].type = CellType.Border;
-            _cells[h][i].type = CellType.Border;
+            cells[0][i].type = CellType.Border;
+            cells[h][i].type = CellType.Border;
         }
         // left and right borders
         for (int i = 0; i < height; ++i)
         {
-            _cells[i][0].type = CellType.Border;
-            _cells[i][w].type = CellType.Border;
+            cells[i][0].type = CellType.Border;
+            cells[i][w].type = CellType.Border;
         }
         // pillars, paths and obstacles
         for (int i = 1; i < h; ++i)
@@ -140,15 +136,15 @@ public class Gamefield : MonoBehaviour
             {
                 if (i % 2 == 0 && j % 2 == 0)
                 {
-                    _cells[i][j].type = CellType.Border;
+                    cells[i][j].type = CellType.Border;
                 }
                 else if (UnityEngine.Random.Range(0.0f, 1.0f) > density)
                 {
-                    _cells[i][j].type = CellType.Obstacle;
+                    cells[i][j].type = CellType.Obstacle;
                 }
                 else
                 {
-                    _cells[i][j].type = CellType.Path;
+                    cells[i][j].type = CellType.Path;
                 }
             }
         }
@@ -158,19 +154,19 @@ public class Gamefield : MonoBehaviour
     {
         int h = height - 1;
         int w = width - 1;
-        int h_offset = -height / 2;
+        int h_offset = height / 2;
         int w_offset = -width / 2;
         Action<int, int, Tile[]> setTile = (i, j, tiles) =>
         {
-            var pos = new Vector3Int(j + w_offset, i + h_offset, 0);
+            var pos = new Vector3Int(j + w_offset, -i + h_offset, 0);
             var tile = GetTile(tiles);
             tilemap.SetTile(pos, tile);
         };
         // corners
-        setTile(0, 0, cornerTopRightTiles);
-        setTile(0, w, cornerTopLeftTiles);
-        setTile(h, 0, cornerBottomRightTiles);
-        setTile(h, w, cornerBottomLeftTiles);
+        setTile(0, 0, cornerTopLeftTiles);
+        setTile(0, w, cornerTopRightTiles);
+        setTile(h, 0, cornerBottomLeftTiles);
+        setTile(h, w, cornerBottomRightTiles);
         // top and bottom borders
         for (int i = 1; i < w; ++i)
         {
@@ -188,9 +184,13 @@ public class Gamefield : MonoBehaviour
         {
             for (int j = 1; j < w; ++j)
             {
-                if (_cells[i][j].type == CellType.Border)
+                if (cells[i][j].type == CellType.Border)
                 {
                     setTile(i, j, pillarTiles);
+                }
+                else if (cells[i][j].type == CellType.Obstacle)
+                {
+                    setTile(i, j, obstacleTiles);
                 }
                 else
                 {
@@ -224,8 +224,7 @@ public class Gamefield : MonoBehaviour
         }
     }
 
-    private Cell[][] _cells { get; set; }
-    private bool _good;
+    private Cell[][] cells { get; set; }
 
     #endregion
 }

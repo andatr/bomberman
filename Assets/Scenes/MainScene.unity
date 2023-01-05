@@ -257,9 +257,7 @@ GameObject:
   - component: {fileID: 892661405}
   - component: {fileID: 892661407}
   - component: {fileID: 892661406}
-  - component: {fileID: 892661410}
-  - component: {fileID: 892661409}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -313,10 +311,10 @@ TilemapCollider2D:
   m_GameObject: {fileID: 892661404}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 7450f48e8caf0834099f82b4693d413e, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 1
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
@@ -384,51 +382,6 @@ Transform:
   m_Father: {fileID: 1948625527}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!66 &892661409
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 892661404}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: 7450f48e8caf0834099f82b4693d413e, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 892661406}
-    m_ColliderPaths: []
-  m_CompositePaths:
-    m_Paths: []
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
---- !u!50 &892661410
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 892661404}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 7450f48e8caf0834099f82b4693d413e, type: 2}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &1079662231
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,9 +497,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1134408624}
   - component: {fileID: 1134408623}
-  - component: {fileID: 1134408622}
-  - component: {fileID: 1134408621}
   - component: {fileID: 1134408625}
+  - component: {fileID: 1134408622}
+  - component: {fileID: 1134408627}
+  - component: {fileID: 1134408621}
   - component: {fileID: 1134408626}
   m_Layer: 0
   m_Name: Player
@@ -567,6 +521,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 998a46bc3121c614aa92781a21c92443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skinWidth: 0.01
+  obstacleCount: 1
 --- !u!95 &1134408622
 Animator:
   serializedVersion: 5
@@ -668,7 +624,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.00000035762787, y: 0.016929328}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -679,29 +635,50 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.77742773, y: 0.93385863}
+  m_Size: {x: 0.8, y: 0.8}
   m_EdgeRadius: 0
---- !u!50 &1134408626
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &1134408626
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134408620}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_Material: {fileID: 6200000, guid: f9cfe6d2bfe0e4f4e9fbadf8077747a5, type: 2}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 019293cf136079742b8f39628fb425c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1134408627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134408620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 468128d6a8f7c854496352dadd89952b, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1948625525
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,24 +739,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 892661405}
   pathTiles:
-  - {fileID: 11400000, guid: ab1cbf45c20a7a54d9f20e0ccb2230d6, type: 2}
+  - {fileID: 11400000, guid: a4f0974521ffd76448f992cfa93e8f62, type: 2}
   pillarTiles:
-  - {fileID: 11400000, guid: ab1cbf45c20a7a54d9f20e0ccb2230d6, type: 2}
+  - {fileID: 11400000, guid: a637f19d00827d449923967d2d2457f5, type: 2}
   obstacleTiles:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 413ace0b6a0f4ec499c6bcbb60425f9b, type: 2}
   borderTopTiles:
-  - {fileID: 11400000, guid: 9e0ad853c29b3084a86a5a4bc7f2ae2c, type: 2}
+  - {fileID: 11400000, guid: 60f761090a0c7654faa7c9486fcabf5a, type: 2}
   borderBottomTiles:
-  - {fileID: 11400000, guid: 5cab2eb1792aba144ac3fc7c482c643f, type: 2}
+  - {fileID: 11400000, guid: c02299ef02d78014c96bf29a96d68893, type: 2}
   borderLeftTiles:
-  - {fileID: 11400000, guid: e35b77afbe0227447bde73c2b768d6eb, type: 2}
+  - {fileID: 11400000, guid: 62fc51b25f860ba47bff14c66da84805, type: 2}
   borderRightTiles:
-  - {fileID: 11400000, guid: 4825d3c106bbfd64190ef098cf774966, type: 2}
+  - {fileID: 11400000, guid: 3cdf245964278d347ba603e2d8151285, type: 2}
   cornerTopLeftTiles:
-  - {fileID: 11400000, guid: 9500170092ef2c247ab1aa23ef0dfaa0, type: 2}
+  - {fileID: 11400000, guid: 6fff6e6741addf04da543e2835569703, type: 2}
   cornerTopRightTiles:
-  - {fileID: 11400000, guid: 88aa3993f72b4204fb760aa87a4091f5, type: 2}
+  - {fileID: 11400000, guid: aa12f0f1ee9bddd4496eb2649e266166, type: 2}
   cornerBottomLeftTiles:
-  - {fileID: 11400000, guid: 1e7367daa67f09942b8830a8dc19d467, type: 2}
+  - {fileID: 11400000, guid: 980361a16409ed449b0fe3ec22718501, type: 2}
   cornerBottomRightTiles:
-  - {fileID: 11400000, guid: 36b6d3be3e0d917439847796033e148f, type: 2}
+  - {fileID: 11400000, guid: 5570154fac18b0c42868732ec34312d6, type: 2}
