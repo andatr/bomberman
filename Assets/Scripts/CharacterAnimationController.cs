@@ -7,14 +7,13 @@ public class CharacterAnimationController : MonoBehaviour
     private void Awake()
     {
         SetAnimator();
-        SetController();       
+        SetController();
         SetAnimationParams();
     }
 
     private void OnDestroy()
     {
-        if (movementController != null)
-        {
+        if (movementController != null) {
             movementController.DirectionChanged -= OnMovementDirectionChanged;
         }
     }
@@ -26,8 +25,7 @@ public class CharacterAnimationController : MonoBehaviour
     private void SetAnimator()
     {
         animator = GetComponent<Animator>();
-        if (animator == null)
-        {
+        if (animator == null) {
             enabled = false;
             Debug.LogError("Animator component not found", this);
         }
@@ -36,13 +34,11 @@ public class CharacterAnimationController : MonoBehaviour
     private void SetController()
     {
         movementController = GetComponent<IMovementController>();
-        if (movementController == null)
-        {
+        if (movementController == null) {
             enabled = false;
             Debug.LogError("Movement Controller component not set", this);
         }
-        else
-        {
+        else {
             movementController.DirectionChanged += OnMovementDirectionChanged;
         }
     }
@@ -58,14 +54,12 @@ public class CharacterAnimationController : MonoBehaviour
     {
         bool movingX = direction.x > float.Epsilon || direction.x < -float.Epsilon;
         bool movingY = direction.y > float.Epsilon || direction.y < -float.Epsilon;
-        if (movingX || movingY)
-        {
+        if (movingX || movingY) {
             animator.SetBool(isMovingId, true);
             animator.SetFloat(deltaXId, movingX ? (direction.x > 0.0f ? 1.0f : -1.0f) : 0.0f);
             animator.SetFloat(deltaYId, movingY ? (direction.y > 0.0f ? 1.0f : -1.0f) : 0.0f);
         }
-        else
-        {
+        else {
             animator.SetBool(isMovingId, false);
         }
     }

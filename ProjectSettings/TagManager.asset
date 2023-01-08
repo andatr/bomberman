@@ -47,6 +47,9 @@ TagManager:
   - name: Mobs
     uniqueID: 2940008537
     locked: 0
+  - name: Bombs
+    uniqueID: 1173236329
+    locked: 0
   - name: Player
     uniqueID: 408053077
     locked: 0

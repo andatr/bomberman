@@ -2,54 +2,64 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
-    #region Unity Messages
+    #region Fields
 
     [SerializeField]
-    private GameRules rules;
+    private GameRules _rules;
 
     [SerializeField]
-    private Gamefield gamefield;
+    private Gamefield _gamefield;
 
     [SerializeField]
-    private PlayerMovementController player;
+    private PlayerMovementController _player;
+
+    private int _level = -1;
+
+    #endregion
+
+    #region Public / Messages
 
     private void Awake()
     {
-        if (gamefield == null)
-        {
-            enabled = false;
-            Debug.LogError("Gamefield component is not set", this);
-        }
-        if (rules == null)
-        {
-            enabled = false;
-            Debug.LogError("Game Rules component is not set", this);
-        }
-        if (player == null)
-        {
-            enabled = false;
-            Debug.LogError("Player Movement Controller component is not set", this);
-        }
+        CheckComponents();
     }
 
     private void Start()
     {
-        NextLevel(0);
+        NewGame();
     }
 
     #endregion
 
     #region Private
 
-    private void NextLevel(int level)
+    private void CheckComponents()
     {
-        gamefield.Generate(
-            rules.gamefield.width,
-            rules.gamefield.height,
-            rules.gamefield.GetDensity(level)
-        );
-        player.Position = gamefield.TileToWorld(new Vector3Int(1, 1, 0));
-        player.Speed = rules.player.speed;
+        if (_gamefield == null) {
+            enabled = false;
+            Debug.LogError("Gamefield component not set", this);
+        }
+        if (_rules == null) {
+            enabled = false;
+            Debug.LogError("Game Rules component not set", this);
+        }
+        if (_player == null) {
+            enabled = false;
+            Debug.LogError("Player Movement Controller component not set", this);
+        }
+    }
+
+    private void NewGame()
+    {
+        _level = -1;
+        NextLevel();
+    }
+
+    private void NextLevel()
+    {
+        ++_level;
+        _gamefield.Generate(_level);
+        _player.Position = _gamefield.TileToWorld(new Vector3Int(1, 1, 0));
     }
 
     #endregion

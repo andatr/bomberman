@@ -1,5 +1,5 @@
 {
-    "name": "New Controls",
+    "name": "PlayerActions",
     "maps": [
         {
             "name": "Player",
@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Fire",
+                    "name": "Attack",
                     "type": "Button",
                     "id": "6489fea2-f34d-4061-ac88-f1851f632059",
                     "expectedControlType": "Button",
@@ -98,7 +98,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Fire",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -109,7 +109,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Fire",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
