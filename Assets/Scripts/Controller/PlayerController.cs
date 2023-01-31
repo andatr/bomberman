@@ -103,9 +103,10 @@ namespace Bomberman
 
         private void CheckComponents()
         {
-            SetTransform();
             SetCollisionFilter();
-            SetExtents();
+            _transform = this.GetComponentEx<Transform>();
+            var collider = this.GetComponentEx<BoxCollider2D>();
+            _extents = collider.bounds.extents;
         }
 
         private void SetCollisionFilter()
@@ -114,27 +115,6 @@ namespace Bomberman
             _collisionFilter.useLayerMask = true;
             _collisionFilter.layerMask = LayerMask.GetMask("Obstacles");
             _obstacles = new RaycastHit2D[_obstacleCount];
-        }
-
-        private void SetExtents()
-        {
-            var collider = GetComponent<BoxCollider2D>();
-            if (collider == null) {
-                enabled = false;
-                Debug.LogError("BoxCollider2D component not found", this);
-            }
-            else {
-                _extents = collider.bounds.extents;
-            }
-        }
-
-        private void SetTransform()
-        {
-            _transform = GetComponent<Transform>();
-            if (_transform == null) {
-                enabled = false;
-                Debug.LogError("Transform component not found", this);
-            }
         }
 
         #endregion

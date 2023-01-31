@@ -45,24 +45,24 @@ namespace Bomberman
 
         private void CheckComponents()
         {
-            CheckComponent(_tilemap, "Tilemap");
-            CheckComponent(_pathTiles, "Path");
-            CheckComponent(_pillarTiles, "Pillart");
-            CheckComponent(_obstacleMidTiles, "Obstacle");
-            CheckComponent(_obstacleRightTiles, "Obstacle");
-            CheckComponent(_obstacleLeftTiles, "Obstacle");
-            CheckComponent(_obstacleSingleTiles, "Obstacle");
-            CheckComponent(_borderTopTiles, "Top border");
-            CheckComponent(_borderBottomTiles, "Bottom border");
-            CheckComponent(_borderLeftTiles, "Left border");
-            CheckComponent(_borderRightTiles, "Right border");
-            CheckComponent(_cornerTopLeftTile, "Top-Left corner");
-            CheckComponent(_cornerTopRightTile, "Top-Right corner");
-            CheckComponent(_cornerBottomLeftTile, "Bottom-Left corner");
-            CheckComponent(_cornerBottomRightTile, "Bottom-right corner");
-            CheckComponent(_entranceTile, "Entrance");
-            CheckComponent(_exitLockedTile, "Locked Exit");
-            CheckComponent(_exitTile, "Exit");
+            this.CheckMember(_tilemap, "Tilemap");
+            this.CheckMember(_pathTiles, "Path");
+            this.CheckMember(_pillarTiles, "Pillart");
+            this.CheckMember(_obstacleMidTiles, "Obstacle");
+            this.CheckMember(_obstacleRightTiles, "Obstacle");
+            this.CheckMember(_obstacleLeftTiles, "Obstacle");
+            this.CheckMember(_obstacleSingleTiles, "Obstacle");
+            this.CheckMember(_borderTopTiles, "Top border");
+            this.CheckMember(_borderBottomTiles, "Bottom border");
+            this.CheckMember(_borderLeftTiles, "Left border");
+            this.CheckMember(_borderRightTiles, "Right border");
+            this.CheckMember(_cornerTopLeftTile, "Top-Left corner");
+            this.CheckMember(_cornerTopRightTile, "Top-Right corner");
+            this.CheckMember(_cornerBottomLeftTile, "Bottom-Left corner");
+            this.CheckMember(_cornerBottomRightTile, "Bottom-right corner");
+            this.CheckMember(_entranceTile, "Entrance");
+            this.CheckMember(_exitLockedTile, "Locked Exit");
+            this.CheckMember(_exitTile, "Exit");
         }
 
         private void OnCellCleared(Vector2Int cell)
@@ -126,14 +126,6 @@ namespace Bomberman
             if (_gamefield != null) {
                 _gamefield.Generated -= OnGenerated;
                 _gamefield.CellCleared -= OnCellCleared;
-            }
-        }
-
-        public void CheckComponent(System.Object tile, string name)
-        {
-            if (tile == null) {
-                enabled = false;
-                Debug.LogError($"{name} tile not set", this);
             }
         }
 

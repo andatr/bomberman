@@ -28,11 +28,12 @@ namespace Bomberman
             _spread = false;
         }
 
-        public void ForceSpread()
+        public bool ForceSpread()
         {
-            if (_spread) return;
+            if (_spread) return false;
             _spread = true;
             _pool.SpreadExplosion(this, _gridPosition, _direction, _strength - 1, _liveTime - _time);
+            return true;
         }
 
         public bool Update(float deltaTime)

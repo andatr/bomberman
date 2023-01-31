@@ -17,20 +17,32 @@ namespace Bomberman
 
         public int Range { get { return _player.BombRange; } }
 
+        public BombModel(BombConfig config)
+        {
+            _triggerTime = config.bombTriggerTime;
+        }
+
         public bool Place(Vector2Int gridPosition, PlayerModel player)
         {
             _player = player;
             _gridPosition = gridPosition;
             _time = 0.0f;
+            _liveTime = _player.BombLiveTime;
             Placed?.Invoke(this);
             return true;
+        }
+
+        public void Trigger()
+        {
+            float newLiveTime = _time + _triggerTime;
+            _liveTime = Mathf.Min(_liveTime, newLiveTime);
+            Triggered?.Invoke(this);
         }
 
         public bool Update(float deltaTime)
         {
             _time += deltaTime;
-            if (_time >= _player.BombLiveTime) {
-                _time = _player.BombLiveTime;
+            if (_time >= _liveTime) {
                 Exploded?.Invoke(this);
                 return true;
             }
@@ -39,6 +51,7 @@ namespace Bomberman
 
         public event Action<IBombModel_View> Placed;
         public event Action<IBombModel_View> Exploded;
+        public event Action<IBombModel_View> Triggered;
 
         #endregion
 
@@ -47,6 +60,8 @@ namespace Bomberman
         private PlayerModel _player;
         private Vector2Int _gridPosition;
         private float _time;
+        private float _liveTime;
+        private float _triggerTime;
 
         #endregion
     }

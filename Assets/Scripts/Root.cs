@@ -28,26 +28,11 @@ namespace Bomberman
 
         private bool CheckComponents()
         {
-            if (_config == null) {
-                enabled = false;
-                Debug.LogError("Config not set", this);
-            }
-            if (_gamefield == null) {
-                enabled = false;
-                Debug.LogError("Gamefield not set", this);
-            }
-            if (_player == null) {
-                enabled = false;
-                Debug.LogError("Player not set", this);
-            }
-            if (_bombs == null) {
-                enabled = false;
-                Debug.LogError("Bombs not set", this);
-            }
-            if (_explosions == null) {
-                enabled = false;
-                Debug.LogError("Explosions not set", this);
-            }
+            this.CheckMember(_config, "Config");
+            this.CheckMember(_gamefield, "Gamefield");
+            this.CheckMember(_player, "Player");
+            this.CheckMember(_bombs, "Bombs");
+            this.CheckMember(_explosions, "Explosions");
             return enabled;
         }
 
@@ -55,63 +40,33 @@ namespace Bomberman
         {
             var model = new PlayerModel(config, bombs);
             PlayerController controller = player.GetComponent<PlayerController>();
-            if (controller == null) {
-                enabled = false;
-                Debug.LogError("PlayerController component not found", this);
-            }
-            else {
-                controller.Init(model, grid);
-            }
-            CharacterView view = player.GetComponent<CharacterView>();
-            if (view == null) {
-                enabled = false;
-                Debug.LogError("CharacterView component not found", this);
-            }
-            else {
-                view.Init(model);
-            }
+            controller.Init(model, grid);
+            CharacterView view = player.GetComponentEx<CharacterView>();
+            view.Init(model);
             return model;
         }
 
         private (GamefieldModel, IGrid) SetupGamefield(GameObject gamefield, GamefieldConfig config)
         {
             var model = new GamefieldModel(config);
-            GamefieldView view = gamefield.GetComponent<GamefieldView>();
-            if (view == null) {
-                enabled = false;
-                Debug.LogError("GamefieldView component not found", this);
-            }
-            else {
-                view.Init(model);
-            }
+            GamefieldView view = gamefield.GetComponentEx<GamefieldView>();
+            view.Init(model);
             return (model, view);
         }
 
         private ExplosionPoolModel SetupExplosions(GameObject explosions, GamefieldModel gamefield, BombConfig config)
         {
             var model = new ExplosionPoolModel(config, gamefield);
-            ExplosionController controller = explosions.GetComponent<ExplosionController>();
-            if (controller == null) {
-                enabled = false;
-                Debug.LogError("Explosion Controller component not found", this);
-            }
-            else {
-                controller.Init(model, gamefield);
-            }
+            ExplosionController controller = explosions.GetComponentEx<ExplosionController>();
+            controller.Init(model, gamefield);
             return model;
         }
 
         private BombPoolModel SetupBombs(GameObject bombs, GamefieldModel gamefield, ExplosionPoolModel explosions, IGrid grid, BombConfig config)
         {
             var model = new BombPoolModel(config, gamefield, explosions);
-            BombController controller = bombs.GetComponent<BombController>();
-            if (controller == null) {
-                enabled = false;
-                Debug.LogError("BombController component not found", this);
-            }
-            else {
-                controller.Init(model, grid);
-            }
+            BombController controller = bombs.GetComponentEx<BombController>();
+            controller.Init(model, grid);
             return model;
         }
 

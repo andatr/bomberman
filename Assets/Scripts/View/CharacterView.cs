@@ -13,8 +13,8 @@ namespace Bomberman
 
         public void Init(ICharacterModel_View character)
         {
-            SetTransform();
-            SetAnimator();
+            _transform = this.GetComponentEx<Transform>();
+            _animator  = this.GetComponentEx<Animator>();
             SetAnimationParams();
             Unsubscribe();
             _character = character;
@@ -29,24 +29,6 @@ namespace Bomberman
 
         #region Private
 
-        private void SetTransform()
-        {
-            _transform = GetComponent<Transform>();
-            if (_transform == null) {
-                enabled = false;
-                Debug.LogError("Transform component not found", this);
-            }
-        }
-
-        private void SetAnimator()
-        {
-            animator = GetComponent<Animator>();
-            if (animator == null) {
-                enabled = false;
-                Debug.LogError("Animator component not found", this);
-            }
-        }
-
         private void SetAnimationParams()
         {
             deltaXId   = Animator.StringToHash("deltaX"  );
@@ -60,12 +42,12 @@ namespace Bomberman
             bool movingX = direction.x > float.Epsilon || direction.x < -float.Epsilon;
             bool movingY = direction.y > float.Epsilon || direction.y < -float.Epsilon;
             if (movingX || movingY) {
-                animator.SetBool(isMovingId, true);
-                animator.SetFloat(deltaXId, movingX ? (direction.x > 0.0f ? 1.0f : -1.0f) : 0.0f);
-                animator.SetFloat(deltaYId, movingY ? (direction.y > 0.0f ? 1.0f : -1.0f) : 0.0f);
+                _animator.SetBool(isMovingId, true);
+                _animator.SetFloat(deltaXId, movingX ? (direction.x > 0.0f ? 1.0f : -1.0f) : 0.0f);
+                _animator.SetFloat(deltaYId, movingY ? (direction.y > 0.0f ? 1.0f : -1.0f) : 0.0f);
             }
             else {
-                animator.SetBool(isMovingId, false);
+                _animator.SetBool(isMovingId, false);
             }
         }
 
@@ -76,7 +58,7 @@ namespace Bomberman
 
         private void OnDeath()
         {
-            animator.SetBool(isDeadId, true);
+            _animator.SetBool(isDeadId, true);
         }
 
         private void Unsubscribe()
@@ -93,7 +75,7 @@ namespace Bomberman
         #region Fields
 
         private Transform _transform;
-        private Animator animator;
+        private Animator _animator;
         private ICharacterModel_View _character;
         private int deltaXId;
         private int deltaYId;

@@ -13,7 +13,7 @@ namespace Bomberman
         {
             _gamefield = gamefield;
             _explosions = explosions;
-            Func<int, BombModel> bombFactory = (int index) => new BombModel();
+            Func<int, BombModel> bombFactory = (int index) => new BombModel(config);
             _bombs = new Pool<BombModel>(config.bombTotalLimit, bombFactory);
         }
 

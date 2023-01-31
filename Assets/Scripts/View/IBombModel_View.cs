@@ -13,8 +13,10 @@ namespace Bomberman
 
         float LiveTime { get; }
 
-        public event Action<IBombModel_View> Placed;
+        event Action<IBombModel_View> Placed;
 
-        public event Action<IBombModel_View> Exploded;
+        event Action<IBombModel_View> Exploded;
+
+        event Action<IBombModel_View> Triggered;
     }
 }

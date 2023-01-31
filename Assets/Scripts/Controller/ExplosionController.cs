@@ -101,17 +101,17 @@ namespace Bomberman
 
         private void CheckComponents()
         {
-            CheckComponent(_tilemap, "Tilemap");
-            CheckComponent(_explosionMiddle, "Explosion Middle");
-            CheckComponent(_explosionLeft, "Explosion Left");
-            CheckComponent(_explosionRight, "Explosion Right");
-            CheckComponent(_explosionTop, "Explosion Top");
-            CheckComponent(_explosionBottom, "Explosion Bottom");
-            CheckComponent(_explosionLeftEnd, "Explosion Left End");
-            CheckComponent(_explosionRightEnd, "Explosion Right End");
-            CheckComponent(_explosionTopEnd, "Explosion Top End");
-            CheckComponent(_explosionBottomEnd, "Explosion Bottom End");
-            CheckComponent(_explosionObstacle, "Explosion Obstacle");
+            this.CheckMember(_tilemap, "Tilemap");
+            this.CheckMember(_explosionMiddle, "Explosion Middle");
+            this.CheckMember(_explosionLeft, "Explosion Left");
+            this.CheckMember(_explosionRight, "Explosion Right");
+            this.CheckMember(_explosionTop, "Explosion Top");
+            this.CheckMember(_explosionBottom, "Explosion Bottom");
+            this.CheckMember(_explosionLeftEnd, "Explosion Left End");
+            this.CheckMember(_explosionRightEnd, "Explosion Right End");
+            this.CheckMember(_explosionTopEnd, "Explosion Top End");
+            this.CheckMember(_explosionBottomEnd, "Explosion Bottom End");
+            this.CheckMember(_explosionObstacle, "Explosion Obstacle");
         }
 
         private void Unsubscribe()
@@ -120,14 +120,6 @@ namespace Bomberman
                 _explosionPool.Placed -= ExplosionPlaced;
                 _explosionPool.Removed -= ExplosionRemoved;
                 _explosionPool.Spread -= ExplosionSpread;
-            }
-        }
-
-        private void CheckComponent(Object component, string name)
-        {
-            if (component == null) {
-                enabled = false;
-                Debug.LogError($"{name} not set", this);
             }
         }
 

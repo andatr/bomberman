@@ -15,9 +15,9 @@ namespace Bomberman
 
         public ExplosionPoolModel(BombConfig config, GamefieldModel gamefield)
         {
-            _gamefield = gamefield;
             _liveTime = config.explosionLiveTime;
             _spreadTime = config.explosionSpreadTime;
+            _gamefield = gamefield;
             Func<int, ExplosionModel> factory = (int index) => new ExplosionModel(this);
             _explosions = new Pool<ExplosionModel>(CalcCapacity(), factory);
         }
@@ -68,6 +68,9 @@ namespace Bomberman
                 explosion = _explosions.GetItem();
                 if (explosion == null) return;
                 cell.Explosion = explosion;
+            }
+            if (cell.Bomb != null) {
+                cell.Bomb.Trigger();
             }
             Spread?.Invoke(origin);
             explosion.Place(nextPosition, direction, strength, liveTime);
@@ -123,10 +126,10 @@ namespace Bomberman
 
         #region Fields
 
-        private GamefieldModel _gamefield;
-        private Pool<ExplosionModel> _explosions;
         private float _liveTime;
         private float _spreadTime;
+        private GamefieldModel _gamefield;
+        private Pool<ExplosionModel> _explosions;
 
         #endregion
     }

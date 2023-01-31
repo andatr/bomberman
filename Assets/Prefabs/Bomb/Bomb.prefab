@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d5dba44193fee044afb21a91f4784fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _triggeredColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!95 &4400057915473312972
 Animator:
   serializedVersion: 5
