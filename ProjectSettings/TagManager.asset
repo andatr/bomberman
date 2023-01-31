@@ -44,11 +44,14 @@ TagManager:
   - name: Background
     uniqueID: 3237619381
     locked: 0
-  - name: Mobs
-    uniqueID: 2940008537
+  - name: Explosion
+    uniqueID: 3915090819
     locked: 0
   - name: Bombs
     uniqueID: 1173236329
+    locked: 0
+  - name: Mobs
+    uniqueID: 2940008537
     locked: 0
   - name: Player
     uniqueID: 408053077
