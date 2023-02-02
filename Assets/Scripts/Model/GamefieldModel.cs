@@ -13,6 +13,14 @@ namespace Bomberman
 
         public int Height { get { return _height; } }
 
+        public Vector2Int KeyPosition { get { return _keyPosition; } }
+
+        public Vector2Int ExitPosition { get { return _exitPosition; } }
+
+        public Vector2Int BonusPosition { get { return _bonusPosition; } }
+
+        public Vector2Int PlayerStartPosition { get { return _playerStartPosition; } }
+
         public GamefieldCell Cell(Vector2Int position)
         {
             return _cells[position.y][position.x];
@@ -32,32 +40,31 @@ namespace Bomberman
         {
             float density = 0.5f + _density * level;
             density = 1.0f - density;
-            int h = _height - 1;
-            int w = _width - 1;
+            int height = _height - 1;
+            int width  = _width - 1;
+            int halfHeight = height / 2;
+            int halfWidth = width / 2;
             // top and bottom borders
             for (int i = 0; i < _width; ++i) {
                 _cells[0][i].CellType = CellType.Border;
-                _cells[h][i].CellType = CellType.Border;
+                _cells[height][i].CellType = CellType.Border;
             }
             // left and right borders
             for (int i = 0; i < _height; ++i) {
                 _cells[i][0].CellType = CellType.Border;
-                _cells[i][w].CellType = CellType.Border;
+                _cells[i][width].CellType = CellType.Border;
             }
             // pillars, paths and obstacles
-            for (int i = 1; i < h; ++i) {
-                for (int j = 1; j < w; ++j) {
-                    if (i % 2 == 0 && j % 2 == 0) {
-                        _cells[i][j].CellType = CellType.Border;
-                    }
-                    else if (UnityEngine.Random.Range(0.0f, 1.0f) > density) {
-                        _cells[i][j].CellType = CellType.Obstacle;
-                    }
-                    else {
-                        _cells[i][j].CellType = CellType.Path;
-                    }
-                }
-            }
+                                 FillQuadrant(1,         halfWidth, 1,          halfHeight, density); // top left
+            int obstacleCount1 = FillQuadrant(halfWidth, width,     1,          halfHeight, density); // top right
+            int obstacleCount2 = FillQuadrant(1,         halfWidth, halfHeight, height,     density); // bottom left
+            int obstacleCount3 = FillQuadrant(halfWidth, width,     halfHeight, height,     density); // bottom right
+            // positions of exit, key and bonus
+            Vector2Int pos1 = GetPositionInQuadrant(halfWidth, width,     1,          halfHeight, obstacleCount1);
+            Vector2Int pos2 = GetPositionInQuadrant(1,         halfWidth, halfHeight, height,     obstacleCount2);
+            Vector2Int pos3 = GetPositionInQuadrant(halfWidth, width,     halfHeight, height,     obstacleCount3);
+            GenerateObjects(pos1, pos2, pos3);
+            _playerStartPosition = new Vector2Int(1, 1);
             Generated?.Invoke();
         }
 
@@ -78,6 +85,83 @@ namespace Bomberman
 
         #region Private
 
+        private int FillQuadrant(int xStart, int xEnd, int yStart, int yEnd, float density)
+        {
+            int count = 0;
+            for (int i = yStart; i < yEnd; ++i) {
+                for (int j = xStart; j < xEnd; ++j) {
+                    if (FillCell(j, i, density) == CellType.Obstacle) ++count;
+                }
+            }
+            return count;
+        }
+
+        private CellType FillCell(int x, int y, float density)
+        {
+            if (x % 2 == 0 && y % 2 == 0) {
+                _cells[y][x].CellType = CellType.Border;
+            }
+            else if (UnityEngine.Random.Range(0.0f, 1.0f) > density) {
+                _cells[y][x].CellType = CellType.Obstacle;
+            }
+            else {
+                _cells[y][x].CellType = CellType.Path;
+            }
+            return _cells[y][x].CellType;
+        }
+
+        private Vector2Int GetPositionInQuadrant(int xStart, int xEnd, int yStart, int yEnd, int obstacles)
+        {
+            int index = UnityEngine.Random.Range(0, obstacles);
+            int count = 0;
+            for (int i = yStart; i < yEnd; ++i) {
+                for (int j = xStart; j < xEnd; ++j) {
+                    if (_cells[i][j].CellType == CellType.Obstacle) {
+                        if (count++ == index) return new Vector2Int(j, i);
+                    }
+                }
+            }
+            // should never rich this
+            Debug.LogWarning("GetPositionInQuadrant error");
+            return new Vector2Int((xStart + xStart) / 2, (yStart + yEnd) / 2);
+        }
+
+        private void GenerateObjects(Vector2Int pos1, Vector2Int pos2, Vector2Int pos3)
+        {
+            int variant = UnityEngine.Random.Range(0, 6);
+            switch (variant) {
+                case 0:
+                    _keyPosition   = pos1;
+                    _exitPosition  = pos2;
+                    _bonusPosition = pos3;
+                    break;
+                case 1:
+                    _keyPosition   = pos1;
+                    _exitPosition  = pos3;
+                    _bonusPosition = pos2;
+                    break;
+                case 2:
+                    _keyPosition   = pos2;
+                    _exitPosition  = pos1;
+                    _bonusPosition = pos3;
+                    break;
+                case 3:
+                    _keyPosition   = pos2;
+                    _exitPosition  = pos3;
+                    _bonusPosition = pos1;
+                    break;
+                case 4:
+                    _keyPosition   = pos3;
+                    _exitPosition  = pos1;
+                    _bonusPosition = pos2;
+                    break;
+                case 5:
+                    _keyPosition   = pos3;
+                    _exitPosition  = pos2;
+                    _bonusPosition = pos1;
+                    break;
+            }
+        }
         private void ValidateSize(ref int size)
         {
             if (size < 5) {
@@ -109,6 +193,10 @@ namespace Bomberman
         private int _width;
         private int _height;
         private float _density;
+        private Vector2Int _keyPosition;
+        private Vector2Int _exitPosition;
+        private Vector2Int _bonusPosition;
+        private Vector2Int _playerStartPosition;
 
         #endregion
     }
